@@ -1,0 +1,40 @@
+[package]
+name = "learn_wgpu"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# These lines tell cargo that we want to allow our crate to build
+# a native Rust static library (rlib)
+# and a C/C++ compatible library (cdylib).
+# We need the rlib if we want to run wgpu in a desktop environment.
+# We need the cdylib to create the Web Assembly that browser will actually run.
+[lib]
+crate-type=["cdylib", "rlib"]
+
+[dependencies]
+cfg-if = "1.0.0"
+env_logger = "0.9.0"
+log = "0.4.16"
+pollster = "0.2.5"
+wasm-bindgen-futures = "0.4.30"
+wgpu = "0.12.0"
+winit = "0.26.1"
+
+# tells cargo to only include these dependencies if we are targeting the wasm32 architecture.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+# configures the panic! macro to send errors to the javascript console
+console_error_panic_hook = "0.1.6"
+# It sends all logs to the javascript console.
+# It can be configured to only send logs of a particular log level.
+# This is also great for debugging.
+console_log = "0.2.0"
+# enable WebGL feature on wgpu if we want to run on most current browsers
+wgpu = { version = "0.12", features = ["webgl"] }
+# It's responsible for generating the boilerplate code that will tell the browser how to use our crate.
+# It also allows us to expose methods in Rust that will can be used in Javascript, and vice-versa.
+wasm-bindgen = "0.2"
+# includes many methods and structures that are available in a normal javascript application:
+# get_element_by_id, append_child.
+web-sys = { version = "0.3", features = ["Document", "Window", "Element"]}
