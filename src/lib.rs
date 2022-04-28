@@ -14,6 +14,7 @@ struct State {
     config: wgpu::SurfaceConfiguration,
     size: winit::dpi::PhysicalSize<u32>,
     render_pipeline: wgpu::RenderPipeline,
+    clear_color: wgpu::Color,
 }
 
 impl State {
@@ -32,6 +33,13 @@ impl State {
             })
             .await
             .unwrap();
+
+        // print on MacOSX
+        // AdapterInfo { name: "AMD Radeon Pro 5700", vendor: 0, device: 0, device_type: DiscreteGpu, backend: Metal }
+        // for x in instance.enumerate_adapters(wgpu::Backends::all()) {
+        //     println!("{:?}", x.get_info());
+        //     println!("{:?}", x.features());
+        // }
 
         let (device, queue) = adapter
             .request_device(
@@ -114,6 +122,7 @@ impl State {
             config,
             size,
             render_pipeline,
+            clear_color: wgpu::Color::BLACK,
         }
     }
 
@@ -126,13 +135,22 @@ impl State {
         }
     }
 
-    fn input(&mut self, _event: &WindowEvent) -> bool {
-        false
+    fn input(&mut self, event: &WindowEvent) -> bool {
+        match event {
+            WindowEvent::CursorMoved { position, .. } => {
+                self.clear_color = wgpu::Color {
+                    r: position.x as f64 / self.size.width as f64,
+                    g: position.y as f64 / self.size.height as f64,
+                    b: 1.0,
+                    a: 1.0,
+                };
+                true
+            }
+            _ => false,
+        }
     }
 
-    fn update(&mut self) {
-
-    }
+    fn update(&mut self) {}
 
     fn render(&mut self) -> Result<(), wgpu::SurfaceError> {
         let output = self.surface.get_current_texture()?;
@@ -151,12 +169,7 @@ impl State {
                     view: &view,
                     resolve_target: None,
                     ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color {
-                            r: 0.1,
-                            g: 0.2,
-                            b: 0.3,
-                            a: 1.0,
-                        }),
+                        load: wgpu::LoadOp::Clear(self.clear_color),
                         store: true,
                     },
                 }],
@@ -186,7 +199,6 @@ pub async fn run() {
     }
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
-    let mut state = State::new(&window).await;
 
     #[cfg(target_arch = "wasm32")]
     {
@@ -205,6 +217,7 @@ pub async fn run() {
             .expect("Couldn't append canvas to document body")
     }
 
+    let mut state = State::new(&window).await;
     event_loop.run(move |event, _, control_flow| match event {
         Event::WindowEvent {
             ref event,
@@ -236,7 +249,9 @@ pub async fn run() {
             state.update();
             match state.render() {
                 Ok(_) => {}
-                Err(wgpu::SurfaceError::Lost | wgpu::SurfaceError::Outdated) => state.resize(state.size),
+                Err(wgpu::SurfaceError::Lost | wgpu::SurfaceError::Outdated) => {
+                    state.resize(state.size)
+                }
                 Err(wgpu::SurfaceError::OutOfMemory) => *control_flow = ControlFlow::Exit,
                 Err(wgpu::SurfaceError::Timeout) => log::warn!("Surface timeout"),
             }
