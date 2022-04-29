@@ -1,6 +1,7 @@
 [package]
 name = "learn_wgpu"
 version = "0.1.0"
+authors = ["Jaye Lee <lidongjies@gmail.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -13,6 +14,10 @@ edition = "2021"
 [lib]
 crate-type=["cdylib", "rlib"]
 
+[[bin]]
+name = "learn_wgpu"
+path = "src/main.rs"
+
 [dependencies]
 bytemuck = { version = "1.9.1", features = ["derive"] }
 cfg-if = "1.0.0"
@@ -21,7 +26,13 @@ log = "0.4.16"
 pollster = "0.2.5"
 wasm-bindgen-futures = "0.4.30"
 wgpu = "0.12.0"
-winit = "0.26.1"
+winit = "0.26"
+anyhow = { version = "1.0.57", default-features = false }
+
+[dependencies.image]
+version = "0.24"
+default-features = false
+features = ["png", "jpeg"]
 
 # tells cargo to only include these dependencies if we are targeting the wasm32 architecture.
 [target.'cfg(target_arch = "wasm32")'.dependencies]
@@ -35,7 +46,7 @@ console_log = "0.2.0"
 wgpu = { version = "0.12", features = ["webgl"] }
 # It's responsible for generating the boilerplate code that will tell the browser how to use our crate.
 # It also allows us to expose methods in Rust that will can be used in Javascript, and vice-versa.
-wasm-bindgen = "0.2"
+wasm-bindgen = "0.2.76"
 # includes many methods and structures that are available in a normal javascript application:
 # get_element_by_id, append_child.
-web-sys = { version = "0.3", features = ["Document", "Window", "Element"]}
+web-sys = { version = "0.3.53", features = ["Document", "Window", "Element"]}

@@ -5,12 +5,15 @@ use winit::{
     window::WindowBuilder,
 };
 
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::*;
+
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
 async fn run() {
     cfg_if::cfg_if! {
         if #[cfg(target_arch = "wasm32")] {
             std::panic::set_hook(Box::new(console_error_panic_hook::hook));
-            console_log::init_with_level(log::Level::Warn).expect("Couldn't not initialize logger");
+            console_log::init_with_level(log::Level::Debug).expect("Couldn't not initialize logger");
         } else {
             env_logger::init();
         }
@@ -27,7 +30,7 @@ async fn run() {
         web_sys::window()
             .and_then(|win| win.document())
             .and_then(|doc| {
-                let dst = doc.get_element_by_id("wasm_example")?;
+                let dst = doc.get_element_by_id("wasm-example")?;
                 let canvas = web_sys::Element::from(window.canvas());
                 dst.append_child(&canvas).ok()?;
                 Some(())
@@ -84,3 +87,4 @@ async fn run() {
 fn main() {
     pollster::block_on(run());
 }
+
