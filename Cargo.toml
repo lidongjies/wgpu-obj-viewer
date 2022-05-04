@@ -24,7 +24,6 @@ cfg-if = "1.0.0"
 env_logger = "0.9.0"
 log = "0.4.16"
 pollster = "0.2.5"
-wasm-bindgen-futures = "0.4.30"
 wgpu = "0.12.0"
 winit = "0.26"
 anyhow = { version = "1.0.57", default-features = false }
@@ -47,6 +46,7 @@ wgpu = { version = "0.12", features = ["webgl"] }
 # It's responsible for generating the boilerplate code that will tell the browser how to use our crate.
 # It also allows us to expose methods in Rust that will can be used in Javascript, and vice-versa.
 wasm-bindgen = "0.2.76"
+wasm-bindgen-futures = "0.4.30"
 # includes many methods and structures that are available in a normal javascript application:
 # get_element_by_id, append_child.
 web-sys = { version = "0.3.53", features = ["Document", "Window", "Element"]}

@@ -1,0 +1,10 @@
+## commands
+
+**wasm-webgl** 
+
+`wasm-pack build --target web`
+
+**wasm-webgpu** 
+
+`RUSTFLAGS=--cfg=web_sys_unstable_apis wasm-pack build --target web`
+
