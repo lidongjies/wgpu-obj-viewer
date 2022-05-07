@@ -3,6 +3,9 @@ name = "learn_wgpu"
 version = "0.1.0"
 authors = ["Jaye Lee <lidongjies@gmail.com>"]
 edition = "2021"
+description = "learn wgpu"
+repository = ""
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
