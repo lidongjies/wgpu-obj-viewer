@@ -22,15 +22,16 @@ name = "learn_wgpu"
 path = "src/main.rs"
 
 [dependencies]
-bytemuck = { version = "1.9.1", features = ["derive"] }
 cfg-if = "1.0.0"
 env_logger = "0.9.0"
 log = "0.4.16"
 pollster = "0.2.5"
 wgpu = "0.12.0"
 winit = "0.26"
-anyhow = { version = "1.0.57", default-features = false }
 cgmath = "0.18.0"
+bytemuck = { version = "1.9.1", features = ["derive"] }
+anyhow = { version = "1.0.57", default-features = false }
+tobj = { version = "3.2.2", features = ["async"] }
 
 [dependencies.image]
 version = "0.24"
@@ -53,4 +54,10 @@ wasm-bindgen = "0.2.76"
 wasm-bindgen-futures = "0.4.30"
 # includes many methods and structures that are available in a normal javascript application:
 # get_element_by_id, append_child.
-web-sys = { version = "0.3.53", features = ["Document", "Window", "Element"]}
+web-sys = { version = "0.3.53", features = ["Document", "Window", "Element", "Location"] }
+reqwest = "0.11.10"
+
+[build-dependencies]
+anyhow = "1.0.57"
+fs_extra = "1.2.0"
+glob = "0.3.0"
