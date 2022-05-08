@@ -1,9 +1,9 @@
 mod camera;
 mod model;
+mod renderer;
 mod resource;
 mod texture;
 mod vertex;
-mod renderer;
 
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;

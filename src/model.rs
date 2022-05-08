@@ -56,11 +56,7 @@ pub trait DrawModel<'a> {
         instances: Range<u32>,
         camera_bind_group: &'a wgpu::BindGroup,
     );
-    fn draw_model(
-        &mut self,
-        model: &'a Model,
-        camera_bing_group: &'a wgpu::BindGroup,
-    );
+    fn draw_model(&mut self, model: &'a Model, camera_bing_group: &'a wgpu::BindGroup);
     fn draw_model_instanced(
         &mut self,
         model: &'a Model,
@@ -100,7 +96,12 @@ where
         self.draw_model_instanced(model, 0..1, camera_bing_group);
     }
 
-    fn draw_model_instanced(&mut self, model: &'b Model, instances: Range<u32>, camera_bing_group: &'b BindGroup) {
+    fn draw_model_instanced(
+        &mut self,
+        model: &'b Model,
+        instances: Range<u32>,
+        camera_bing_group: &'b BindGroup,
+    ) {
         for mesh in &model.meshes {
             let material = &model.materials[mesh.material];
             self.draw_mesh_instanced(mesh, material, instances.clone(), camera_bing_group);

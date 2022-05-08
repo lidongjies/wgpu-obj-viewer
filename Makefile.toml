@@ -1,0 +1,13 @@
+[tasks.dev]
+env = { "OUT_DIR" = "test" }
+command = "cargo"
+args = ["run", "--package", "learn_wgpu", "--bin", "learn_wgpu"]
+
+[tasks.webgl]
+command =  "wasm-pack"
+args = ["build"]
+
+[tasks.webgpu]
+env = { "RUSTFLAGS" = "--cfg=web_sys_unstable_apis" }
+command = "wasm-pack"
+args = ["build"]

@@ -1,5 +1,4 @@
 use cgmath::{InnerSpace, Rotation3, Zero};
-use wgpu::include_wgsl;
 use wgpu::util::DeviceExt;
 use winit::{event::*, window::Window};
 
@@ -170,7 +169,7 @@ impl Renderer {
                 ],
             });
 
-        let shader = device.create_shader_module(&include_wgsl!("shader.wgsl"));
+        let shader = device.create_shader_module(&wgpu::include_wgsl!("shader.wgsl"));
         let render_pipeline_layout =
             device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
                 label: Some("Render Pipeline Layout"),
@@ -319,7 +318,11 @@ impl Renderer {
             });
             render_pass.set_pipeline(&self.render_pipeline);
             render_pass.set_vertex_buffer(1, self.instance_buffer.slice(..));
-            render_pass.draw_model_instanced(&self.obj_model, 0..self.instances.len() as u32, &self.camera_bind_group);
+            render_pass.draw_model_instanced(
+                &self.obj_model,
+                0..self.instances.len() as u32,
+                &self.camera_bind_group,
+            );
         }
 
         // submit will accept anything that implements IntoIter

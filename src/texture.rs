@@ -31,7 +31,7 @@ impl Texture {
             height: dimensions.1,
             depth_or_array_layers: 1,
         };
-        
+
         let texture = device.create_texture(&wgpu::TextureDescriptor {
             label,
             size,
@@ -80,14 +80,18 @@ impl Texture {
 impl Texture {
     pub const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
-    pub fn create_depth_texture(device: &wgpu::Device, config: &wgpu::SurfaceConfiguration, label: &str) -> Self {
+    pub fn create_depth_texture(
+        device: &wgpu::Device,
+        config: &wgpu::SurfaceConfiguration,
+        label: &str,
+    ) -> Self {
         let size = wgpu::Extent3d {
             width: config.width,
             height: config.height,
-            depth_or_array_layers: 1
+            depth_or_array_layers: 1,
         };
         let texture = device.create_texture(&wgpu::TextureDescriptor {
-           label: Some(label),
+            label: Some(label),
             size,
             mip_level_count: 1,
             sample_count: 1,
@@ -109,6 +113,10 @@ impl Texture {
             ..Default::default()
         });
 
-        Texture { texture, view, sampler }
+        Texture {
+            texture,
+            view,
+            sampler,
+        }
     }
 }
